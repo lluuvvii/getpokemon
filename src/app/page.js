@@ -25,7 +25,7 @@ export default function Home() {
   // Fetch Pokemon from API
   const fetchPokemon = async () => {
     setLoading(true);
-    const randomId = Math.floor(Math.random() * 1025) + 1; // Random Pokemon ID 1-150
+    const randomId = Math.floor(Math.random() * 1025) + 1; // Random Pokemon ID 1-1025
     const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
     setPokemon(response.data);
     localStorage.setItem('pokemon', JSON.stringify(response.data));
