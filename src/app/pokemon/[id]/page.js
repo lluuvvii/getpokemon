@@ -12,15 +12,23 @@ export default function PokemonDetail({ params }) {
 
   // Fetch Pokemon detail based on ID
   useEffect(() => {
-    if (params?.id) {
-      const fetchPokemon = async () => {
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${params?.id}`);
-        setPokemon(response.data);
-        setLoading(false);
-      };
-
-      fetchPokemon();
+    const savedPokemon = localStorage.getItem('pokemon');
+    if (savedPokemon) {
+      const parsedPokemon = JSON.parse(savedPokemon);
+      setLoading(true);
+      setPokemon(parsedPokemon);
+      setLoading(false);
+      return;
     }
+
+    const fetchPokemon = async () => {
+      setLoading(true);
+      const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
+      setPokemon(response.data);
+      setLoading(false);
+    };
+
+    if (params?.id) fetchPokemon();
   }, [params?.id]);
 
   if (loading) {
@@ -34,12 +42,12 @@ export default function PokemonDetail({ params }) {
   return (
     <>
       <Container className="mt-5">
-        <Row>
+        <Row className="mb-20">
           <Col md={6}>
-            <Card>
+            <Card className="border-8" style={{ borderColor: "#3764bf" }}>
               <Card.Img variant="top" src={pokemon.sprites.front_default} alt={pokemon.name} />
-              <Card.Body>
-                <Card.Title>{pokemon.name.toUpperCase()}</Card.Title>
+              <Card.Body style={{ backgroundColor: "#fff094" }}>
+                <Card.Title style={{ fontFamily: 'fantasy', color: "#3764bf" }}>{pokemon.name.toUpperCase()}</Card.Title>
                 <Card.Text>
                   <strong>Height:</strong> {pokemon.height} dm<br />
                   <strong>Weight:</strong> {pokemon.weight} hg<br />
@@ -50,10 +58,10 @@ export default function PokemonDetail({ params }) {
           </Col>
 
           <Col md={6}>
-            <Card>
+            <Card className="border-8" style={{ borderColor: "#3764bf" }}>
               <Card.Body>
                 <Card.Title>Base Stats</Card.Title>
-                <Table striped bordered hover size="sm">
+                <Table striped bordered hover size="sm" className="border-3" style={{ borderColor: "#3764bf" }}>
                   <thead>
                     <tr>
                       <th>Stat</th>
@@ -73,7 +81,7 @@ export default function PokemonDetail({ params }) {
                 {/* Abilities Section */}
                 <Row className="mt-3">
                   <Col md={12}>
-                    <Card>
+                    <Card className="border-3" style={{ borderColor: "#3764bf" }}>
                       <Card.Body>
                         <Card.Title>Abilities</Card.Title>
                         <ul>
@@ -86,7 +94,7 @@ export default function PokemonDetail({ params }) {
 
                       </Card.Body>
                     </Card>
-                    <Button className='mt-3' variant="danger" onClick={() => router.push(`/`)}>
+                    <Button className='mt-3' variant="danger" onClick={() => router.push(`/`)} style={{ backgroundColor: "#3764bf" }}>
                       Back
                     </Button>
                   </Col>
@@ -98,11 +106,11 @@ export default function PokemonDetail({ params }) {
 
       </Container>
       {/* Footer */}
-      <footer className="mt-3 bg-light py-3">
+      <footer className="py-3" style={{ backgroundColor: "#3764bf", position: "fixed", bottom: 0, width: "100%" }}>
         <Container>
           <Row>
             <Col md={12} className="text-center">
-              <p className="mb-0">© 2024 Get Pokemon. All Rights Reserved.</p>
+              <p className="mb-0 text-white">© 2024 Get Pokemon. All Rights Reserved.</p>
             </Col>
           </Row>
         </Container>
